@@ -8,12 +8,13 @@
 #   ./test.sh _corpus100_run
 #   ./test.sh _corpus100_show_progress
 
-TMPDIR=/tmp/dpe
+TMPDIR=../../tmp/dpe
 mkdir -p $TMPDIR
 GITDIR=$(git rev-parse --show-toplevel)
 
 _download_one() {
     ID=$1
+    XML=$TMPDIR/$ID.orig.xml
     BEFORE=$TMPDIR/$ID.orig.json
     USER_AGENT="Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0"
     # if the file already exists, don't download it again
@@ -21,7 +22,8 @@ _download_one() {
         return
     fi
     echo "downloading $ID"
-    curl -A "${USER_AGENT}" --silent "https://observatoire-dpe-audit.ademe.fr/pub/dpe/${ID}/xml" | ./xml_to_json.js > $BEFORE
+    curl -A "${USER_AGENT}" --silent "https://observatoire-dpe-audit.ademe.fr/pub/dpe/${ID}/xml" > $XML
+    ./xml_to_json.js > $BEFORE
 }
 
 _index_many() {

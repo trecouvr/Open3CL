@@ -1,4 +1,4 @@
-#!/bin/env bun
+#!/usr/bin/env bun
 
 import * as fs from 'fs';
 import { XMLParser } from 'fast-xml-parser';

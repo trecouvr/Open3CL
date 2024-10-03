@@ -74,6 +74,7 @@ export function conso_ch(di, de, du, _pos, cfg_ch, em_list, GV, Sh, hsp, bch, bc
 
   const Ich = emetteur_eq / di.rg;
   const Ich_dep = emetteur_eq / di.rg_dep;
+  console.error('FKKFKE', coef, Ich, bch);
   di.conso_ch = coef * Ich * bch;
   di.conso_ch_depensier = coef * Ich_dep * bch_dep;
 }

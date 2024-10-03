@@ -88,8 +88,8 @@ export function tv_generateur_combustion(di, de, du, type, GV, tbase) {
   if (!row) console.error('!! pas de valeur forfaitaire trouvée pour generateur_combustion !!');
   de.tv_generateur_combustion_id = Number(row.tv_generateur_combustion_id);
   if (Number(row.pn)) di.pn = Number(row.pn) * 1000;
-  const E = E_tab[de.presence_ventouse];
-  const F = F_tab[de.presence_ventouse];
+  const E = E_tab[de.presence_ventouse || 0];
+  const F = F_tab[de.presence_ventouse || 0];
 
   /**
    * Si la consommation ECS est obtenue par virtualisation du générateur collectif pour les besoins individuels
