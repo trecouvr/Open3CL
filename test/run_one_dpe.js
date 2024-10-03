@@ -1,4 +1,4 @@
-#!/bin/env bun
+#!/usr/bin/env bun
 
 import * as fs from 'fs';
 
@@ -30,5 +30,5 @@ fs.readFile(dpe_json_file, 'utf8', (err, data) => {
   // don't clean, so we can compare with the original dpe
   const dpe_out = calcul_3cl(dpe_in);
   // json dump dpe_out on stdout
-  console.log(JSON.stringify(dpe_out, null, 2));
+  fs.writeFileSync(1, JSON.stringify(dpe_out, null, 2), 'utf-8');
 });

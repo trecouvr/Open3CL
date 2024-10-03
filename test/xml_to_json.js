@@ -1,4 +1,4 @@
-#!/bin/env bun
+#!/usr/bin/env bun
 
 import * as fs from 'fs';
 import { XMLParser } from 'fast-xml-parser';
@@ -39,4 +39,4 @@ const options = {
 const parser = new XMLParser(options);
 
 const dpe_json = parser.parse(data).dpe;
-console.log(JSON.stringify(dpe_json, null, 2));
+fs.writeFileSync(1, JSON.stringify(dpe_json, null, 2), 'utf-8');
