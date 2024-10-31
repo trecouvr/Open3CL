@@ -56,7 +56,7 @@ export function calc_Qdw_j(instal_ecs, becs_j) {
 
   const type_installation = requestInput(de, du, 'type_installation');
 
-  let Qdw_j;
+  let Qdw_j = 0;
   if (type_installation === 'installation individuelle') {
     const Sh = de.surface_habitable;
     const Rat_ecs = 1;
