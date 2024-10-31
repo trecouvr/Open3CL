@@ -66,9 +66,9 @@ function calc_umur0(di, de, du) {
     case 'saisie direct u0 justifiée à partir des documents justificatifs autorisés':
     case "saisie direct u0 correspondant à la performance de la paroi avec son isolation antérieure iti (umur_iti) lorsqu'il y a une surisolation ite réalisée":
       di.umur0 = requestInput(de, du, 'umur0_saisi', 'float');
-      break;
+      return;
     case 'u0 non saisi car le u est saisi connu et justifié.':
-      break;
+      return;
     default:
       console.warn('methode_saisie_u0 inconnue:', methode_saisie_u0);
   }
@@ -112,8 +112,6 @@ function calc_umur0(di, de, du) {
       di.umur0 = 1 / (1 / di.umur0 + 0.7);
     }
   }
-
-  di.umur0 = Math.min(2.5, di.umur0);
 }
 
 export default function calc_mur(mur, zc, pc_id, ej) {
@@ -127,11 +125,13 @@ export default function calc_mur(mur, zc, pc_id, ej) {
 
   b(di, de, du, zc);
 
+  const umur_nu = () => Math.min(di.umur0, 2.5);
+
   const methode_saisie_u = requestInput(de, du, 'methode_saisie_u');
   switch (methode_saisie_u) {
     case 'non isolé':
       calc_umur0(di, de, du);
-      di.umur = Math.min(di.umur0, 2.5);
+      di.umur = umur_nu();
       break;
     case 'epaisseur isolation saisie justifiée par mesure ou observation':
     case 'epaisseur isolation saisie justifiée à partir des documents justificatifs autorisés': {
@@ -139,14 +139,14 @@ export default function calc_mur(mur, zc, pc_id, ej) {
       const epaisseurIsolation = requestInput(de, du, 'epaisseur_isolation', 'int') * 0.01;
 
       if (epaisseurIsolation) {
-        di.umur = 1 / (1 / Number(di.umur0) + epaisseurIsolation / 0.04);
+        di.umur = 1 / (1 / umur_nu() + epaisseurIsolation / 0.04);
       } else {
         console.error(
           `Le mur ${mur.donnee_entree.description} ne possède pas de donnée d'entrée pour epaisseur_isolation 
           alors que methode_saisie_u = 'epaisseur isolation saisie'`
         );
 
-        di.umur = Math.min(di.umur0, 2.5);
+        di.umur = umur_nu();
       }
 
       break;
@@ -157,7 +157,7 @@ export default function calc_mur(mur, zc, pc_id, ej) {
       const resistanceIsolation = requestInput(de, du, 'resistance_isolation', 'float');
 
       if (resistanceIsolation) {
-        di.umur = 1 / (1 / Number(di.umur0) + resistanceIsolation);
+        di.umur = 1 / (1 / umur_nu() + resistanceIsolation);
       } else {
         console.error(
           `Le mur ${mur.donnee_entree.description} ne possède pas de donnée d'entrée pour resistance_isolation 
@@ -172,13 +172,13 @@ export default function calc_mur(mur, zc, pc_id, ej) {
     case 'isolation inconnue  (table forfaitaire)':
       calc_umur0(di, de, du);
       tv_umur(di, de, du, pc_id, zc, ej);
-      di.umur = Math.min(di.umur, di.umur0);
+      di.umur = Math.min(di.umur, umur_nu());
       break;
     case "année d'isolation différente de l'année de construction saisie justifiée (table forfaitaire)": {
       calc_umur0(di, de, du);
       const pi_id = requestInputID(de, du, 'periode_isolation') || pc_id;
       tv_umur(di, de, du, pi_id, zc, ej);
-      di.umur = Math.min(di.umur, di.umur0);
+      di.umur = Math.min(di.umur, umur_nu());
       break;
     }
     case 'année de construction saisie (table forfaitaire)': {
@@ -202,7 +202,7 @@ export default function calc_mur(mur, zc, pc_id, ej) {
         );
         if (bug_for_bug_compat) tv_umur(di, de, du, pc_id, zc, ej);
       }
-      di.umur = Math.min(di.umur, di.umur0);
+      di.umur = Math.min(di.umur, umur_nu());
       break;
     }
     case 'saisie direct u justifiée  (à partir des documents justificatifs autorisés)':
