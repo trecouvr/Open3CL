@@ -13,15 +13,17 @@ function tv_k(di, de, du, pc_id, enveloppe) {
   if (!de.reference_1) {
     console.warn(`BUG: pas de reference pour le pont thermique ${de.description}...`);
     // on trouve les references grace a la description
-    const desc = de.description;
+    const desc = de.description.toLowerCase().replace('pont thermique', '').trim();
     let desc_1, desc_2;
 
-    if (desc.match(/(.+) \/ (.+)/)) {
-      desc_1 = desc.match(/(.+) \/ (.+)/)[1];
-      desc_2 = desc.match(/(.+) \/ (.+)/)[2];
-    } else if (desc.match(/(.+)-(.+)/)) {
-      desc_1 = desc.match(/(.+)-(.+)/)[1];
-      desc_2 = desc.match(/(.+)-(.+)/)[2];
+    const re1 = /(.+) ?\/ ?(.+)/;
+    const re2 = /(.+)-(.+)/;
+    if (desc.match(re1)) {
+      desc_1 = desc.match(re1)[1].trim();
+      desc_2 = desc.match(re1)[2].trim();
+    } else if (desc.match(re2)) {
+      desc_1 = desc.match(re2)[1].trim();
+      desc_2 = desc.match(re2)[2].trim();
     } else {
       console.error(`BUG: description '${desc}' non reconnue pour le pont thermique...`);
       return;
