@@ -24,6 +24,7 @@ const coef_ges = {
   'électricité ch': 0.079,
   'électricité ecs': 0.065,
   'électricité fr': 0.064,
+  électricité: 0.064,
   'électricité éclairage': 0.069,
   'électricité auxiliaire': 0.064
 };
@@ -147,10 +148,10 @@ export default function calc_conso(Sh, zc_id, ca_id, vt, ch, ecs, fr, prorataECS
       fr_en = [];
     }
     const gen_ch_en = gen_ch.filter(
-      (gen_ch) => gen_ch.donnee_entree.enum_type_energie_id === type_energie
+      (gen_ch) => gen_ch.donnee_entree.enum_type_energie_id === energie_id
     );
     const gen_ecs_en = gen_ecs.filter(
-      (gen_ecs) => gen_ecs.donnee_entree.enum_type_energie_id === type_energie
+      (gen_ecs) => gen_ecs.donnee_entree.enum_type_energie_id === energie_id
     );
     let conso_en = calc_conso_pond(Sh, zc_id, vt_en, gen_ch_en, gen_ecs_en, fr_en, '', null);
     conso_en = {
