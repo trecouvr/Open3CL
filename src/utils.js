@@ -76,28 +76,28 @@ export function add_references(enveloppe) {
     i += 1;
   }
   i = 0;
-  for (const ph of enveloppe.plancher_haut_collection.plancher_haut || []) {
+  for (const ph of enveloppe.plancher_haut_collection?.plancher_haut || []) {
     if (!ph.donnee_entree.reference) {
       ph.donnee_entree.reference = `plancher_haut_${i}`;
     }
     i += 1;
   }
   i = 0;
-  for (const pb of enveloppe.plancher_bas_collection.plancher_bas || []) {
+  for (const pb of enveloppe.plancher_bas_collection?.plancher_bas || []) {
     if (!pb.donnee_entree.reference) {
       pb.donnee_entree.reference = `plancher_bas_${i}`;
     }
     i += 1;
   }
   i = 0;
-  for (const bv of enveloppe.baie_vitree_collection.baie_vitree || []) {
+  for (const bv of enveloppe.baie_vitree_collection?.baie_vitree || []) {
     if (!bv.donnee_entree.reference) {
       bv.donnee_entree.reference = `baie_vitree_${i}`;
     }
     i += 1;
   }
   i = 0;
-  for (const porte of enveloppe.porte_collection.porte || []) {
+  for (const porte of enveloppe.porte_collection?.porte || []) {
     if (!porte.donnee_entree.reference) {
       porte.donnee_entree.reference = `porte_${i}`;
     }
