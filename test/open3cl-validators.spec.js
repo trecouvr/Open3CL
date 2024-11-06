@@ -4,19 +4,6 @@ import { jest } from '@jest/globals';
 import { getAdemeFileJson, getResultFile, saveResultFile } from './test-helpers.js';
 
 describe('Test DPE validators', () => {
-  beforeAll(() => {
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
-    corpus.forEach((ademeId) => {
-      const dpeRequest = getAdemeFileJson(ademeId);
-      try {
-        const dpeResult = calcul_3cl(structuredClone(dpeRequest));
-        saveResultFile(ademeId, dpeResult);
-      } catch (err) {
-        console.warn(`3CL Engine failed for file ${ademeId}`, err);
-      }
-    });
-  });
-
   test('DPE must be parsed without plancher_bas if pont_thermique_collection is empty or does not concern plancher_bas', () => {
     const dpe = getAdemeFileJson('2187E0981996L');
     dpe.logement.enveloppe.plancher_bas_collection = null;

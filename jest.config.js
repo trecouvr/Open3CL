@@ -17,6 +17,7 @@ const config = {
   testFailureExitCode: 0,
   // Add extra jest configuration
   setupFilesAfterEnv: ['<rootDir>/test/setup-jest.js'],
+  globalSetup: '<rootDir>/test/setup-global-jest.js',
   transform: {}
 };
 

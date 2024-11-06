@@ -5,22 +5,6 @@ import { jest } from '@jest/globals';
 import { PRECISION } from './constant.js';
 
 describe('Test Open3CL engine compliance on corpus', () => {
-  /**
-   * Generate all required files
-   */
-  beforeAll(() => {
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
-    corpus.forEach((ademeId) => {
-      const dpeRequest = getAdemeFileJson(ademeId);
-      try {
-        const dpeResult = calcul_3cl(structuredClone(dpeRequest));
-        saveResultFile(ademeId, dpeResult);
-      } catch (err) {
-        console.warn(`3CL Engine failed for file ${ademeId}`, err);
-      }
-    });
-  });
-
   describe.each([
     'conso_ch',
     'conso_ch_depensier',

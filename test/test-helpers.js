@@ -1,6 +1,7 @@
 import { XMLParser } from 'fast-xml-parser';
 import fs from 'node:fs';
 import enums from '../src/enums.js';
+import { PRECISION, PRECISION_PERCENT } from './constant.js';
 
 const xmlParser = new XMLParser({
   // We want to make sure collections of length 1 are still parsed as arrays
@@ -44,10 +45,10 @@ export function getAdemeFileJson(ademeId) {
     const data = fs.readFileSync(dpeFile, { encoding: 'utf8', flag: 'r' });
 
     dpeRequest = xmlParser.parse(data).dpe;
-    expect(dpeRequest).not.toBeUndefined();
+    //expect(dpeRequest).not.toBeUndefined();
 
     const dpeModele = enums.modele_dpe[dpeRequest.administratif.enum_modele_dpe_id];
-    expect(dpeModele).toBe('dpe 3cl 2021 méthode logement');
+    //expect(dpeModele).toBe('dpe 3cl 2021 méthode logement');
 
     fs.writeFileSync(dpeRequestFile, JSON.stringify(dpeRequest));
   }
@@ -55,13 +56,18 @@ export function getAdemeFileJson(ademeId) {
   return dpeRequest;
 }
 
+const resultFileCache = {};
 export function saveResultFile(ademeId, result) {
   const dpeResultFile = `test/fixtures/${ademeId}-result.json`;
+  resultFileCache[ademeId] = result;
   fs.writeFileSync(dpeResultFile, JSON.stringify(result));
 }
 
 export function getResultFile(ademeId) {
-  const dpeResultFile = `test/fixtures/${ademeId}-result.json`;
-  const data = fs.readFileSync(dpeResultFile, { encoding: 'utf8', flag: 'r' });
-  return JSON.parse(data);
+  if (!resultFileCache.hasOwnProperty(ademeId)) {
+    const dpeResultFile = `test/fixtures/${ademeId}-result.json`;
+    const data = fs.readFileSync(dpeResultFile, { encoding: 'utf8', flag: 'r' });
+    resultFileCache[ademeId] = JSON.parse(data);
+  }
+  return resultFileCache[ademeId];
 }

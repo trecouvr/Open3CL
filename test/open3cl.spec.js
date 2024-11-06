@@ -5,22 +5,6 @@ import { getAdemeFileJson, getResultFile, saveResultFile } from './test-helpers.
 import { PRECISION } from './constant.js';
 
 describe('Test Open3CL engine on corpus', () => {
-  /**
-   * Generate all required files
-   */
-  beforeAll(() => {
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
-    corpus.forEach((ademeId) => {
-      const dpeRequest = getAdemeFileJson(ademeId);
-      try {
-        const dpeResult = calcul_3cl(structuredClone(dpeRequest));
-        saveResultFile(ademeId, dpeResult);
-      } catch (err) {
-        console.warn(`3CL Engine failed for file ${ademeId}`, err);
-      }
-    });
-  });
-
   describe.each(corpus)(
     'engine output should be same than original ADEME file for %s',
     (ademeId) => {
